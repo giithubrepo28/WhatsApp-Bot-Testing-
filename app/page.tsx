@@ -1,45 +1,5 @@
 'use client';
-
-import { useMemo, useState } from 'react';
-
-const faqs = [
-  { q: 'price', a: 'Thanks for your message! Please share which product or service you are interested in and we will send the latest price.' },
-  { q: 'timing', a: 'Our business hours are Monday to Saturday, 10:00 AM to 8:00 PM.' },
-  { q: 'hello', a: 'Assalam-o-Alaikum! 👋 Welcome. How can we help you today?' },
-  { q: 'hi', a: 'Hello! 👋 How can we help you today?' },
-  { q: 'help', a: 'Sure! Send your question and our auto-response bot will try to help.' }
-];
-
-function autoReply(message: string, language: string) {
-  const text = message.toLowerCase();
-  const hit = faqs.find(x => text.includes(x.q));
-  if (hit) return hit.a;
-  if (language === 'Roman Urdu') return 'Shukriya aapke message ka! 😊 Aap apna sawal detail mein bhej dein, hum madad karne ki koshish karenge.';
-  if (language === 'Urdu') return 'آپ کے پیغام کا شکریہ! 😊 اپنا سوال تفصیل سے بھیج دیں، ہم مدد کرنے کی کوشش کریں گے۔';
-  return 'Thanks for your message! 😊 Please share a little more detail so we can help you.';
-}
-
-export default function Home() {
-  const [message, setMessage] = useState('');
-  const [language, setLanguage] = useState('English');
-  const [reply, setReply] = useState('');
-  const [enabled, setEnabled] = useState(true);
-  const [saved, setSaved] = useState<string[]>([]);
-  const preview = useMemo(() => message ? autoReply(message, language) : 'Your automatic reply will appear here.', [message, language]);
-
-  function generate() {
-    if (!enabled) return setReply('Bot is currently paused.');
-    if (!message.trim()) return setReply('Please enter a test WhatsApp message first.');
-    setReply(autoReply(message, language));
-  }
-
-  return <main className="shell">
-    <header><div><p className="eyebrow">FREE-FIRST • DEMO MODE</p><h1>WhatsApp Auto Response Bot</h1><p className="muted">Test automatic replies before connecting a real WhatsApp Business number.</p></div><button className={enabled ? 'status on' : 'status'} onClick={() => setEnabled(v => !v)}>{enabled ? '● Bot ON' : '○ Bot OFF'}</button></header>
-    <section className="grid">
-      <div className="card"><h2>Bot settings</h2><label>Reply language<select value={language} onChange={e => setLanguage(e.target.value)}><option>English</option><option>Roman Urdu</option><option>Urdu</option></select></label><label>Business welcome message<textarea defaultValue="Assalam-o-Alaikum! 👋 Welcome. How can we help you today?" /></label><div className="chips"><span>FAQ replies</span><span>Welcome message</span><span>Business hours</span><span>Fallback reply</span></div></div>
-      <div className="card"><h2>Live test</h2><label>Incoming WhatsApp message<textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Try: Hi, what is your price?" /></label><button className="primary" onClick={generate}>Generate Auto Reply</button><div className="preview"><small>BOT REPLY</small><p>{reply || preview}</p></div><button className="secondary" onClick={() => { if (reply) setSaved([...saved, reply]); }}>Save reply</button></div>
-    </section>
-    <section className="card"><div className="row"><div><h2>Free features</h2><p className="muted">Demo mode works without paid services or API keys.</p></div><span className="badge">{saved.length} saved</span></div><div className="features"><article><b>⚡ Instant rules</b><span>FAQ and keyword responses</span></article><article><b>🌐 3 languages</b><span>English, Urdu, Roman Urdu</span></article><article><b>🕐 Business hours</b><span>Ready for away messages</span></article><article><b>🔐 Secure by design</b><span>Secrets stay in environment variables</span></article></div></section>
-    <footer>Real WhatsApp delivery requires Meta WhatsApp Business Platform credentials. This demo does not send messages to real users.</footer>
-  </main>;
-}
+import { useState } from 'react';
+import Link from 'next/link';
+const worlds=['Moonlit Promise','Crimson Eclipse','Starlight Academy','Whispering Realm'];
+export default function Home(){const [liked,setLiked]=useState<number[]>([]);const [toast,setToast]=useState('');const note=(x:string)=>{setToast(x);setTimeout(()=>setToast(''),1600)};return <main className="fantasy"><header className="navWrap"><nav className="nav"><Link href="/" className="logo">✦ ELARIA</Link><div className="navLinks"><a href="#home">Home</a><a href="#explore">Explore</a><a href="#genres">Genres</a><a href="#rankings">Rankings</a><a href="#library">Library</a></div><div className="navRight"><button onClick={()=>note('Search coming next')}>⌕ Search</button><button className="sign" onClick={()=>note('Account UI coming next')}>Sign in</button></div></nav></header><section className="hero" id="home"><div className="copy"><small>✦ A NEW WORLD OF STORIES</small><h1>Where <i>dreams</i><br/>become <span>legends.</span></h1><p>Step into beautiful worlds of romance, magic and adventure. Discover stories that feel like they were written just for you.</p><div className="actions"><button className="primary" onClick={()=>document.getElementById('explore')?.scrollIntoView({behavior:'smooth'})}>Explore the realms ↗</button><button className="ghost" onClick={()=>note('Welcome to Elaria ✦')}>Our universe ♡</button></div><div className="stats"><b>12K+<em>Readers</em></b><b>480+<em>Worlds</em></b><b>24/7<em>Imagination</em></b></div></div><div className="art"><div className="moon"/><div className="girl">♡</div><div className="boy">✦</div><div className="stars">✦　✧　✦<br/>　✧　　✦</div><div className="quote">✦<br/><strong>“Some stories are<br/>meant to be felt.”</strong><small>— The Elaria Archives</small></div></div></section><section className="section" id="genres"><small className="label">DISCOVER YOUR NEXT ESCAPE</small><h2>Choose your <i>realm.</i></h2><div className="genres">{['♡ Romance','✧ Fantasy','⚔ Adventure','◈ Mystery','☾ Isekai','✦ Supernatural'].map(x=><button key={x} onClick={()=>note(x+' selected')}>{x}<small>Explore stories　↗</small></button>)}</div></section><section className="section" id="explore"><small className="label">CURATED FOR YOU</small><h2>Featured <i>worlds.</i></h2><div className="cards">{worlds.map((x,i)=><article key={x}><div className={'cover c'+i}><span>✦ 0{i+1}</span><b>{['♡','☾','✧','◈'][i]}</b></div><small>FANTASY · FEATURED <button onClick={()=>setLiked(liked.includes(i)?liked.filter(n=>n!==i):[...liked,i])}>{liked.includes(i)?'♥':'♡'}</button></small><h3>{x}</h3><p>A beautiful realm filled with secrets, wonder and an unexpected connection.</p><button className="enter" onClick={()=>note(x+' preview opened')}>Enter story ↗</button></article>)}</div></section><section className="manifesto"><small>THE ELARIA EXPERIENCE</small><h2>Not just stories.<br/><i>New worlds to live in.</i></h2><p>Beautifully crafted spaces for readers who want a little more magic in every chapter.</p><button className="primary" onClick={()=>note('Your journey begins ✦')}>Begin your journey ↗</button></section><footer><b>✦ ELARIA</b><span>Explore　 Genres　 Rankings　 Library</span><small>© 2026 Elaria · Crafted for dreamers</small></footer>{toast&&<div className="toast">✦ {toast}</div>}</main>}
